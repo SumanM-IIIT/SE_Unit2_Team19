@@ -35,6 +35,7 @@ public class LaneView implements LaneObserver, ActionListener {
 
 	Lane lane;
 	String imgPath = "../images/";
+	int pinCount = 10;
 
 	public LaneView(Lane lane, int laneNum) {
 
@@ -64,7 +65,7 @@ public class LaneView implements LaneObserver, ActionListener {
 	}
 
 	private JPanel makeFrame(Party party) {
-
+		int i, j;
 		initDone = false;
 		bowlers = party.getMembers();
 		int numBowlers = bowlers.size();
@@ -80,8 +81,8 @@ public class LaneView implements LaneObserver, ActionListener {
 		ballGrid = new JPanel[numBowlers][10];
 		pins = new JPanel[numBowlers];
 
-		for (int i = 0; i != numBowlers; i++) {
-			for (int j = 0; j != 23; j++) {
+		for (i = 0; i != numBowlers; i++) {
+			for (j = 0; j != 23; j++) {
 				ballLabel[i][j] = new JLabel(" ");
 				balls[i][j] = new JPanel();
 				balls[i][j].setBorder(
@@ -90,15 +91,15 @@ public class LaneView implements LaneObserver, ActionListener {
 			}
 		}
 
-		for (int i = 0; i != numBowlers; i++) {
-			for (int j = 0; j != 9; j++) {
+		for (i = 0; i != numBowlers; i++) {
+			for (j = 0; j < pinCount - 1; j++) {
 				ballGrid[i][j] = new JPanel();
 				ballGrid[i][j].setLayout(new GridLayout(0, 3));
 				ballGrid[i][j].add(new JLabel("  "), BorderLayout.EAST);
 				ballGrid[i][j].add(balls[i][2 * j], BorderLayout.EAST);
 				ballGrid[i][j].add(balls[i][2 * j + 1], BorderLayout.EAST);
 			}
-			int j = 9;
+			j = pinCount - 1;
 			ballGrid[i][j] = new JPanel();
 			ballGrid[i][j].setLayout(new GridLayout(0, 3));
 			ballGrid[i][j].add(balls[i][2 * j]);
@@ -106,13 +107,13 @@ public class LaneView implements LaneObserver, ActionListener {
 			ballGrid[i][j].add(balls[i][2 * j + 2]);
 		}
 
-		for (int i = 0; i != numBowlers; i++) {
+		for (i = 0; i != numBowlers; i++) {
 			pins[i] = new JPanel();
 			pins[i].setBorder(
 				BorderFactory.createTitledBorder(
 					((Bowler) bowlers.get(i)).getNickName()));
-			pins[i].setLayout(new GridLayout(0, 10));
-			for (int k = 0; k != 10; k++) {
+			pins[i].setLayout(new GridLayout(0, pinCount));
+			for (int k = 0; k < pinCount; k++) {
 				scores[i][k] = new JPanel();
 				scoreLabel[i][k] = new JLabel("  ", SwingConstants.CENTER);
 				scores[i][k].setBorder(
@@ -255,21 +256,23 @@ public class LaneView implements LaneObserver, ActionListener {
 							}
 					
 							int previous;
+							int diffLimits[] = {7, 9, 10, 11};
 							Icon img;
 
 							if (i > 0) {
 								previous = lescores[k][i - 1];
 							}
 							else previous = 0;
+
 							int absDifference = Math.abs(lescores[k][i] - previous);
 
-							if(absDifference < 7)
+							if(absDifference < diffLimits[0])
 								img = new ImageIcon(this.getClass().getResource(imgPath + "lowest.png"));
-							else if(absDifference < 9)
+							else if(absDifference < diffLimits[1])
 								img = new ImageIcon(this.getClass().getResource(imgPath + "mid_low.png"));
 
-							else if(absDifference < 11) {
-								if(absDifference == 10)
+							else if(absDifference < diffLimits[3]) {
+								if(absDifference == diffLimits[2])
 									flag = 1;
 								img = new ImageIcon(this.getClass().getResource(imgPath + "mid_high.png"));
 							}

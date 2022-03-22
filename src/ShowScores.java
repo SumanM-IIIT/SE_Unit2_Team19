@@ -50,12 +50,14 @@ public class ShowScores implements ActionListener, ListSelectionListener {
             // Vector scores = ScoreHistoryFile.getScores(nick);
             Score scoresitem = (Score)scores.get(0);
             int min = Integer.parseInt(scoresitem.getScore());
-            for(int index = 0; index < scores.size(); index++)
+            int index=0;
+            while(index < scores.size())
             {   
                 scoresitem = (Score)scores.get(index);
                 int s = Integer.parseInt(scoresitem.getScore());
                 if (s<min)
                     min = s;
+                index++;
             }
             Vector<String> result =  new Vector<>();
             result.add(Integer.toString(min));
@@ -75,14 +77,16 @@ public class ShowScores implements ActionListener, ListSelectionListener {
             // Vector scores = ScoreHistoryFile.getScores(nick);
             int max = 0;
             Score scoresitem;
-            for(int index = 0; index < scores.size(); index++)
-            {   
+            int index=0;
+            while(index < scores.size())
+            {    
                 scoresitem = (Score)scores.get(index);
                 //newly added
                 System.out.println(scoresitem.getNickName());
                 int s = Integer.parseInt(scoresitem.getScore());
                 if (s>max)
                     max = s;
+                index++;
             }
             Vector<String> result =  new Vector<>();
             result.add(Integer.toString(max));
@@ -127,7 +131,8 @@ public class ShowScores implements ActionListener, ListSelectionListener {
         int max = 0;
         String tempname,topScorername = null;
         Score scoresitem;
-        for(int index = 0; index < scores.size(); index++)
+        int index=0;
+        while(index < scores.size())
         {   
             scoresitem = (Score)scores.get(index);
             tempname = scoresitem.getNickName();
@@ -136,6 +141,7 @@ public class ShowScores implements ActionListener, ListSelectionListener {
             	max = s;
             	topScorername = tempname;
             }
+            index++;
         }
         Vector<String> result =  new Vector<>();
         result.add(topScorername);
@@ -295,11 +301,13 @@ public class ShowScores implements ActionListener, ListSelectionListener {
             System.out.println("in minScore");
             party.clear();
             int pm,min = Integer.parseInt(getScores("minperson",(bowlerdb.get(0)).toString()).get(0));
-            for (int index=1;index < bowlerdb.size();index++)
+            int index=1;
+            while (index < bowlerdb.size())
             {
                 pm = Integer.parseInt(getScores("minperson",(bowlerdb.get(index)).toString()).get(0));
                 if (pm < min)
                     min = pm;
+                index++;
             }
             party.add(Integer.toString(min));
             outputList.setListData(party);
@@ -308,11 +316,13 @@ public class ShowScores implements ActionListener, ListSelectionListener {
             System.out.println("in maxScore");
             party.clear();
             int pm,max = Integer.parseInt(getScores("maxperson",(bowlerdb.get(0)).toString()).get(0));
-            for (int index=1;index < bowlerdb.size();index++)
+            int index=1;
+            while (index < bowlerdb.size())
             {
                 pm = Integer.parseInt(getScores("maxperson",(bowlerdb.get(index)).toString()).get(0));
                 if (pm > max)
                     max = pm;
+                index++;
             }
             party.add(Integer.toString(max));
             outputList.setListData(party);
@@ -322,7 +332,8 @@ public class ShowScores implements ActionListener, ListSelectionListener {
             party.clear();
             int pm,max = Integer.parseInt(getScores("maxperson",(bowlerdb.get(0)).toString()).get(0));
             String tname,TPName = getScorer((bowlerdb.get(0)).toString()).get(0);
-            for (int index=1;index < bowlerdb.size();index++)
+            int index=1;
+            while (index < bowlerdb.size())
             {
                 pm = Integer.parseInt(getScores("maxperson",(bowlerdb.get(index)).toString()).get(0));
                 tname = getScorer((bowlerdb.get(index)).toString()).get(0);
@@ -330,6 +341,7 @@ public class ShowScores implements ActionListener, ListSelectionListener {
                 	max = pm;
                 	TPName = tname;
                 }
+                index++;
             }
             //party.add(Integer.toString(max));
             party.add(TPName);
@@ -341,7 +353,8 @@ public class ShowScores implements ActionListener, ListSelectionListener {
             party.clear();
             int pm,min = Integer.parseInt(getScores("minperson",(bowlerdb.get(0)).toString()).get(0));
             String tname,LPName = getScorer((bowlerdb.get(0)).toString()).get(0);
-            for (int index=1;index < bowlerdb.size();index++)
+            int index=1;
+            while (index < bowlerdb.size())
             {
                 pm = Integer.parseInt(getScores("minperson",(bowlerdb.get(index)).toString()).get(0));
                 tname = getScorer((bowlerdb.get(index)).toString()).get(0);
@@ -349,6 +362,7 @@ public class ShowScores implements ActionListener, ListSelectionListener {
                 	min = pm;
                 	LPName = tname;
                 }
+                index++;
             }
             party.add(LPName);
             outputList.setListData(party);
@@ -360,9 +374,11 @@ public class ShowScores implements ActionListener, ListSelectionListener {
             if (selectedNick != null) {
                 party.clear();
                 Vector<String> ls = getScores("lastscores",selectedNick);
-                for (int index=0;index < ls.size();index++) {
+                int index=0;
+                while (index < ls.size()) {
                     System.out.println(ls.get(index));
                     party.add(ls.get(index));
+                    index++;
                 }
                 outputList.setListData(party);
             }

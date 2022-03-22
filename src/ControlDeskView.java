@@ -23,7 +23,7 @@ import java.util.*;
 
 public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
-	private JButton addParty, finished, assign, report;
+	private JButton addParty, finished, assign, showScore;
 	private JFrame win;
 	private JList partyList;
 	
@@ -61,13 +61,6 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		addParty.addActionListener(this);
 		addPartyPanel.add(addParty);
 		controlsPanel.add(addPartyPanel);
-		
-		report = new JButton("Report");
-		JPanel showScorePanel = new JPanel();
-		showScorePanel.setLayout(new FlowLayout());
-		report.addActionListener(this);
-		showScorePanel.add(report);
-		controlsPanel.add(showScorePanel);
 
 		assign = new JButton("Assign Lanes");
 		JPanel assignPanel = new JPanel();
@@ -82,7 +75,14 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		finished.addActionListener(this);
 		finishedPanel.add(finished);
 		controlsPanel.add(finishedPanel);
-
+		
+		showScore = new JButton("Show Scores Dashboard");
+		JPanel showScorePanel = new JPanel();
+		showScorePanel.setLayout(new FlowLayout());
+		showScore.addActionListener(this);
+		showScorePanel.add(showScore);
+		controlsPanel.add(showScorePanel);
+		
 		// Lane Status Panel
 		JPanel laneStatusPanel = new JPanel();
 		laneStatusPanel.setLayout(new GridLayout(numLanes, 1));
@@ -100,14 +100,6 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			lanePanel.setBorder(new TitledBorder("Lane" + ++laneCount ));
 			laneStatusPanel.add(lanePanel);
 		}
-		
-		// Emoticons in ControlDeskView
-		Icon imgIcon = new ImageIcon(this.getClass().getResource("../images/logo.gif"));
-		JLabel picLabel = new JLabel(imgIcon);
-		JPanel emojiPanel = new JPanel();
-		emojiPanel.setLayout(new FlowLayout());
-		emojiPanel.add(picLabel);
-		controlsPanel.add(emojiPanel);
 
 		// Party Queue Panel
 		JPanel partyPanel = new JPanel();
@@ -162,13 +154,11 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		if (e.getSource().equals(addParty)) {
 			AddPartyView addPartyWin = new AddPartyView(this, maxMembers);
 		}
-		
-		if (e.getSource().equals(report)) {
-			//Report reportWin = new Report();
-		}
-		
 		if (e.getSource().equals(assign)) {
 			controlDesk.assignLane();
+		}
+		if (e.getSource().equals(showScore)) {
+			ShowScores showScoreWin = new ShowScores();
 		}
 		if (e.getSource().equals(finished)) {
 			win.hide();

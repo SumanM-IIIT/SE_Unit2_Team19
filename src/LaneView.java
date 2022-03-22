@@ -252,7 +252,7 @@ public class LaneView implements LaneObserver, ActionListener {
 							}
 					
 							int previous;
-							int diffLimits[] = {7, 9, 10, 11};
+							int diffLimits[] = {6, 8, 10, 11};
 							Icon img;
 
 							if (i > 0) {

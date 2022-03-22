@@ -1,0 +1,525 @@
+@startuml
+
+title __Class Diagram__\n
+
+  
+    class AddPartyView {
+        - addPatron : JButton
+        - allBowlers : JList
+        - bowlerdb : Vector
+        - finished : JButton
+        - lock : Integer
+        - maxSize : int
+        - newPatron : JButton
+        - party : Vector
+        - partyList : JList
+        - remPatron : JButton
+        - selectedMember : String
+        - selectedNick : String
+        - win : JFrame
+        + AddPartyView()
+        + actionPerformed()
+        + getNames()
+        + getParty()
+        + updateNewPatron()
+        + valueChanged()
+    }
+
+  
+
+  
+    class Alley {
+        + Alley()
+        + getControlDesk()
+    }
+
+  
+
+  
+    class Bowler {
+        - email : String
+        - fullName : String
+        - nickName : String
+        + Bowler()
+        + equals()
+        + getEmail()
+        + getFullName()
+        + getNickName()
+    }
+
+  
+
+  
+    class BowlerFile {
+        {static} - BOWLER_DAT : String
+        {static} + getBowlerInfo()
+        {static} + getBowlers()
+        {static} + putBowlerInfo()
+        {static} + registerPatron()
+    }
+
+  
+
+  
+    class ControlDesk {
+        - lanes : HashSet
+        - numLanes : int
+        + ControlDesk()
+        + addPartyQueue()
+        + assignLane()
+        + getLanes()
+        + getNumLanes()
+        + getPartyQueue()
+        + run()
+        + viewScores()
+    }
+
+  
+
+  
+    class ControlDeskEvent {
+        - partyQueue : Vector
+        + ControlDeskEvent()
+        + getPartyQueue()
+    }
+
+  
+
+  
+    interface ControlDeskObserver {
+        {abstract} + receiveControlDeskEvent()
+    }
+
+  
+
+  
+    class ControlDeskSubscriber {
+        - subscribers : Vector
+        + ControlDeskSubscriber()
+        + publish()
+        + subscribe()
+    }
+
+  
+
+  
+    class ControlDeskView {
+        - addParty : JButton
+        - assign : JButton
+        - finished : JButton
+        - maxMembers : int
+        - partyList : JList
+        - showScore : JButton
+        - win : JFrame
+        + ControlDeskView()
+        + actionPerformed()
+        + receiveControlDeskEvent()
+        + updateAddParty()
+    }
+
+  
+
+  
+    class EndGamePrompt {
+        - noButton : JButton
+        - result : int
+        - win : JFrame
+        - yesButton : JButton
+        + EndGamePrompt()
+        + actionPerformed()
+        + distroy()
+        + getResult()
+    }
+
+  
+
+  
+    class EndGameReport {
+        - finished : JButton
+        - memberList : JList
+        - printButton : JButton
+        - result : int
+        - retVal : Vector
+        - selectedMember : String
+        - win : JFrame
+        + EndGameReport()
+        + actionPerformed()
+        + getResult()
+        {static} + main()
+        + valueChanged()
+    }
+
+  
+
+  
+    class Lane {
+        {static} - MAX_GAMES : int
+        - ball : int
+        - bowlIndex : int
+        - bowlerIterator : Iterator
+        - canThrowAgain : boolean
+        - curScores : int[]
+        - finalScores : int[][]
+        - frameNumber : int
+        - gameFinished : boolean
+        - gameIsHalted : boolean
+        - gameNumber : int
+        - game_completed : boolean
+        - initial_halt : boolean
+        - isReady : boolean
+        - partyAssigned : boolean
+        - pauseTime : String
+        - scores : HashMap
+        - subscribers : Vector
+        - tenthFrameStrike : boolean
+        + Lane()
+        + assignParty()
+        + getPinsetter()
+        + isGameFinished()
+        + isPartyAssigned()
+        + pauseGame()
+        + publish()
+        + receivePinsetterEvent()
+        + run()
+        + subscribe()
+        + throwBall()
+        + unPauseGame()
+        + unsubscribe()
+        - markScore()
+        - resetBowlerIterator()
+        - resetScores()
+    }
+
+  
+
+  
+    interface LaneObserver {
+        {abstract} + receiveLaneEvent()
+    }
+
+  
+
+  
+    interface LaneServer {
+        {abstract} + subscribe()
+    }
+
+  
+
+  
+    class LaneStatusView {
+        ~ laneNum : int
+        ~ laneShowing : boolean
+        ~ psShowing : boolean
+        - curBowler : JLabel
+        - foul : JLabel
+        - jp : JPanel
+        - maintenance : JButton
+        - pinsDown : JLabel
+        - viewLane : JButton
+        - viewPinSetter : JButton
+        + LaneStatusView()
+        + actionPerformed()
+        + receiveLaneEvent()
+        + receivePinsetterEvent()
+        + showLane()
+    }
+
+  
+
+  
+    class LaneView {
+        ~ ballGrid : JPanel[][]
+        ~ ballLabel : JLabel[][]
+        ~ ballThrow : JButton
+        ~ balls : JPanel[][]
+        ~ bowlers : Vector
+        ~ cpanel : Container
+        ~ currBallThrowerName : JLabel
+        ~ currentThrow : JLabel
+        ~ frame : JFrame
+        ~ gifArray : int[][]
+        ~ imgPath : String
+        ~ maintenance : JButton
+        ~ pinCount : int
+        ~ pins : JPanel[]
+        ~ scoreLabel : JLabel[][]
+        ~ scores : JPanel[][]
+        - initDone : boolean
+        + LaneView()
+        + actionPerformed()
+        + hide()
+        + initGifArray()
+        + receiveLaneEvent()
+        + show()
+        - makeFrame()
+    }
+
+  
+
+  
+    class NewPatronView {
+        - abort : JButton
+        - done : boolean
+        - email : String
+        - emailField : JTextField
+        - emailLabel : JLabel
+        - finished : JButton
+        - full : String
+        - fullField : JTextField
+        - fullLabel : JLabel
+        - maxSize : int
+        - nick : String
+        - nickField : JTextField
+        - nickLabel : JLabel
+        - selectedMember : String
+        - selectedNick : String
+        - win : JFrame
+        + NewPatronView()
+        + actionPerformed()
+        + done()
+        + getEmail()
+        + getFull()
+        + getNick()
+    }
+
+  
+
+  
+    class Party {
+        - myBowlers : Vector
+        + Party()
+        + getMembers()
+    }
+
+  
+
+  
+    class PinSetterView {
+        - firstRoll : JPanel
+        - frame : JFrame
+        - pinVect : Vector
+        - secondRoll : JPanel
+        + PinSetterView()
+        + hide()
+        {static} + main()
+        + receivePinsetterEvent()
+        + show()
+    }
+
+  
+
+  
+    class Pinsetter {
+        - foul : boolean
+        - pins : boolean[]
+        - rnd : Random
+        - subscribers : Vector
+        - throwNumber : int
+        + Pinsetter()
+        + ballThrown()
+        + reset()
+        + resetPins()
+        + subscribe()
+        - sendEvent()
+    }
+
+  
+
+  
+    class PinsetterEvent {
+        - foulCommited : boolean
+        - pinsDownThisThrow : int
+        - pinsStillStanding : boolean[]
+        - throwNumber : int
+        + PinsetterEvent()
+        + getThrowNumber()
+        + isFoulCommited()
+        + pinKnockedDown()
+        + pinsDownOnThisThrow()
+        + totalPinsDown()
+    }
+
+  
+
+  
+    interface PinsetterObserver {
+        {abstract} + receivePinsetterEvent()
+    }
+
+  
+
+  
+    class PrintableText {
+        ~ POINTS_PER_INCH : int
+        ~ text : String
+        + PrintableText()
+        + print()
+    }
+
+  
+
+  
+    class Queue {
+        - v : Vector
+        + Queue()
+        + add()
+        + asVector()
+        + hasMoreElements()
+        + next()
+    }
+
+  
+
+  
+    class Score {
+        - date : String
+        - nick : String
+        - score : String
+        + Score()
+        + getDate()
+        + getNickName()
+        + getScore()
+        + toString()
+    }
+
+  
+
+  
+    class ScoreHistoryFile {
+        {static} - SCOREHISTORY_DAT : String
+        {static} + addScore()
+        {static} + getScores()
+    }
+
+  
+
+  
+    class ScoreManager {
+        ~ i : int
+        ~ j : int
+        ~ pinCount : int
+        - bowlIndex : int
+        - cumulScores : int[][]
+        + ScoreManager()
+        + getCumulScores()
+        + getFinalScore()
+        + getScore()
+        + reset()
+        + setBowlIndex()
+        + setCumulScores()
+        - normal_throw()
+        - strike()
+    }
+
+  
+
+  
+    class ScoreReport {
+        - content : String
+        + ScoreReport()
+        + sendEmail()
+        + sendPrintout()
+        + sendln()
+        + sendln()
+    }
+
+  
+
+  
+    class ShowScores {
+        - LowestScorer : JButton
+        - TopScorer : JButton
+        - allBowlers : JList<Vector>
+        - bowlerdb : Vector
+        - finished : JButton
+        - lastScores : JButton
+        - maxPlayerScore : JButton
+        - maxScore : JButton
+        - minPlayerScore : JButton
+        - minScore : JButton
+        - outputList : JList<Vector>
+        - party : Vector
+        - selectedNick : String
+        - win : JFrame
+        + ShowScores()
+        + actionPerformed()
+        + getScorer()
+        + getScores()
+        + valueChanged()
+    }
+
+  
+
+  
+    class drive {
+        {static} + main()
+    }
+
+  
+
+  
+    class show {
+        - LowestScorer : JButton
+        - TopScorer : JButton
+        - allBowlers : JList<Vector>
+        - bowlerdb : Vector
+        - finished : JButton
+        - lastScores : JButton
+        - maxPlayerScore : JButton
+        - maxScore : JButton
+        - minPlayerScore : JButton
+        - minScore : JButton
+        - outputList : JList<Vector>
+        - party : Vector
+        - selectedNick : String
+        - win : JFrame
+        + show()
+    }
+
+  
+
+  AddPartyView .up.|> java.awt.event.ActionListener
+  AddPartyView .up.|> javax.swing.event.ListSelectionListener
+  AddPartyView o-- ControlDeskView : controlDesk
+  Alley o-- ControlDesk : controldesk
+  ControlDesk o-- Queue : partyQueue
+  ControlDesk o-- ControlDeskSubscriber : subscribers
+  ControlDeskView .up.|> ControlDeskObserver
+  ControlDeskView .up.|> java.awt.event.ActionListener
+  ControlDeskView o-- ControlDesk : controlDesk
+  EndGamePrompt .up.|> java.awt.event.ActionListener
+  EndGameReport .up.|> java.awt.event.ActionListener
+  EndGameReport .up.|> javax.swing.event.ListSelectionListener
+  Lane .up.|> PinsetterObserver
+  Lane o-- ScoreManager : currentCumulScores
+  Lane o-- Bowler : currentThrower
+  Lane o-- Party : party
+  Lane o-- Pinsetter : setter
+  LaneStatusView .up.|> LaneObserver
+  LaneStatusView .up.|> PinsetterObserver
+  LaneStatusView .up.|> java.awt.event.ActionListener
+  LaneStatusView o-- Lane : lane
+  LaneStatusView o-- LaneView : lv
+  LaneStatusView o-- PinSetterView : psv
+  LaneView .up.|> LaneObserver
+  LaneView .up.|> java.awt.event.ActionListener
+  LaneView o-- Lane : lane
+  NewPatronView .up.|> java.awt.event.ActionListener
+  NewPatronView o-- AddPartyView : addParty
+  PinSetterView .up.|> PinsetterObserver
+  PrintableText .up.|> java.awt.print.Printable
+  ShowScores .up.|> java.awt.event.ActionListener
+  ShowScores .up.|> javax.swing.event.ListSelectionListener
+  show .up.|> java.awt.event.ActionListener
+  show .up.|> javax.swing.event.ListSelectionListener
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

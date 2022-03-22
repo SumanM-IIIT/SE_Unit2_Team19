@@ -7,9 +7,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class LaneView implements LaneObserver, ActionListener {
 
@@ -29,12 +26,11 @@ public class LaneView implements LaneObserver, ActionListener {
 	JPanel[][] ballGrid;
 	JPanel[] pins;
 	JLabel currBallThrowerName, currentThrow;
-    String ballThrowerName;
 	JButton maintenance;
 	JButton ballThrow;
 
 	Lane lane;
-	String imgPath = "../images/";
+	String imgPath = "images/";
 	int pinCount = 10;
 
 	public LaneView(Lane lane, int laneNum) {
@@ -42,7 +38,7 @@ public class LaneView implements LaneObserver, ActionListener {
 		this.lane = lane;
 
 		initDone = true;
-		frame = new JFrame("Lane " + laneNum + ":");
+		frame = new JFrame("Lane - " + laneNum);
 		cpanel = frame.getContentPane();
 		cpanel.setLayout(new BorderLayout());
 
@@ -193,7 +189,7 @@ public class LaneView implements LaneObserver, ActionListener {
                 
                 JPanel demoPanel = new JPanel();
                 demoPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-                currBallThrowerName = new JLabel("Present Ball Thrower");
+                currBallThrowerName = new JLabel("Thrower - ");
           
                       
                 currentThrow = new JLabel();
@@ -267,17 +263,18 @@ public class LaneView implements LaneObserver, ActionListener {
 							int absDifference = Math.abs(lescores[k][i] - previous);
 
 							if(absDifference < diffLimits[0])
-								img = new ImageIcon(this.getClass().getResource(imgPath + "lowest.png"));
+								img = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(imgPath + "lowest_little.jpg")));
 							else if(absDifference < diffLimits[1])
-								img = new ImageIcon(this.getClass().getResource(imgPath + "mid_low.png"));
+								img = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(imgPath + "mid_low_little.jpg")));
 
 							else if(absDifference < diffLimits[3]) {
-								if(absDifference == diffLimits[2])
+								if (absDifference == diffLimits[2]) {
 									flag = 1;
-								img = new ImageIcon(this.getClass().getResource(imgPath + "mid_high.png"));
+								}
+								img = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(imgPath + "mid_high_little.jpg")));
 							}
 							else
-								img = new ImageIcon(this.getClass().getResource(imgPath + "high.png"));
+								img = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(imgPath + "high_little.jpg")));
 
 							JLabel imgJLabel = new JLabel(img);
 							JPanel imgJPanel = new JPanel();

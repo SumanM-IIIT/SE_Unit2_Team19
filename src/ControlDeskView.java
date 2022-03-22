@@ -101,6 +101,14 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			laneStatusPanel.add(lanePanel);
 		}
 
+		String strikeImgPath = "images/strike.jpg";
+		Icon strikeImg = new ImageIcon(this.getClass().getResource(strikeImgPath));
+		JLabel picLabel = new JLabel(strikeImg);
+		JPanel emojiPanel = new JPanel();
+		emojiPanel.setLayout(new FlowLayout());
+		emojiPanel.add(picLabel);
+		controlsPanel.add(emojiPanel);
+
 		// Party Queue Panel
 		JPanel partyPanel = new JPanel();
 		partyPanel.setLayout(new FlowLayout());

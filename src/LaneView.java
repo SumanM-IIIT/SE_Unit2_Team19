@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class LaneView implements LaneObserver, ActionListener {
 
@@ -25,9 +28,13 @@ public class LaneView implements LaneObserver, ActionListener {
 	JLabel[][] scoreLabel;
 	JPanel[][] ballGrid;
 	JPanel[] pins;
-
+	JLabel currBallThrowerName, currentThrow;
+    String ballThrowerName;
 	JButton maintenance;
+	JButton ballThrow;
+
 	Lane lane;
+	String imgPath = "../images/";
 
 	public LaneView(Lane lane, int laneNum) {
 
@@ -110,7 +117,7 @@ public class LaneView implements LaneObserver, ActionListener {
 				scoreLabel[i][k] = new JLabel("  ", SwingConstants.CENTER);
 				scores[i][k].setBorder(
 					BorderFactory.createLineBorder(Color.BLACK));
-				scores[i][k].setLayout(new GridLayout(0, 1));
+				scores[i][k].setLayout(new GridLayout(2, 1));
 				scores[i][k].add(ballGrid[i][k], BorderLayout.EAST);
 				scores[i][k].add(scoreLabel[i][k], BorderLayout.SOUTH);
 				pins[i].add(scores[i][k], BorderLayout.EAST);
@@ -121,9 +128,22 @@ public class LaneView implements LaneObserver, ActionListener {
 		initDone = true;
 		return panel;
 	}
+	int gifArray[][] = new int[10][10];
+	
+	public int[][] initGifArray(int[][] gifArr) {
+		int i, j;
+		for(i = 0; i < 10; i++) {
+			for(j = 0; j < 10; j++) {
+				gifArr[i][j] = 0;
+			}
+		}
+		return gifArr;
+	}
 
 	public void receiveLaneEvent(Party pty, int theIndex, Bowler theBowler, int[][] theCumulScore, HashMap theScore, int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem) {
 		if (lane.isPartyAssigned()) {
+			gifArray = initGifArray(gifArray);
+			
 			int numBowlers = pty.getMembers().size();
 			while (!initDone) {
 				//System.out.println("chillin' here.");
@@ -155,11 +175,37 @@ public class LaneView implements LaneObserver, ActionListener {
 				buttonPanel.add(maintenancePanel);
 
 				cpanel.add(buttonPanel, "South");
+				
+				JPanel demoButtonPanel = new JPanel();
+				demoButtonPanel.setLayout(new FlowLayout());
+				
+				Insets new_buttonMargin = new Insets(8, 8, 8, 8);
+				
+				JPanel demoThrowPanel = new JPanel();
+				demoThrowPanel.setLayout(new FlowLayout());
+				
+				ballThrow = new JButton("Throw");
+				ballThrow.addActionListener(this);
+				demoThrowPanel.add(ballThrow);
+                demoButtonPanel.add(demoThrowPanel);
+                cpanel.add(demoButtonPanel, "North");
+                
+                JPanel demoPanel = new JPanel();
+                demoPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                currBallThrowerName = new JLabel("Present Ball Thrower");
+          
+                      
+                currentThrow = new JLabel();
+                
+                demoPanel.add(currBallThrowerName);
+                demoPanel.add(currentThrow);
+                
+                cpanel.add(demoPanel,"East");
 
 				frame.pack();
 
 			}
-
+			this.currentThrow.setText(theBowler.getNickName());
 			int[][] lescores = theCumulScore;
 			for (int k = 0; k < numBowlers; k++) {
 				for (int i = 0; i <= theFrameNum - 1; i++) {
@@ -195,6 +241,57 @@ public class LaneView implements LaneObserver, ActionListener {
 											.get(bowlers.get(k)))[i]))
 											.toString());
 				}
+				int flag;
+				for (int i = 0; i <= theFrameNum - 1; i++) {
+					flag = 0;
+					if (lescores[k][i] != 0) {
+						if(i == 0 || (i > 0 && lescores[k][i] != lescores[k][i - 1] - 1)) {
+							if(i == 9) {
+								scoreLabel[k][i].setText(
+										(Integer.valueOf(lescores[k][i] + 1)).toString());
+							}
+							else {
+						      scoreLabel[k][i].setText((Integer.valueOf(lescores[k][i])).toString());
+							}
+					
+							int previous;
+							Icon img;
+
+							if (i > 0) {
+								previous = lescores[k][i - 1];
+							}
+							else previous = 0;
+							int absDifference = Math.abs(lescores[k][i] - previous);
+
+							if(absDifference < 7)
+								img = new ImageIcon(this.getClass().getResource(imgPath + "lowest.png"));
+							else if(absDifference < 9)
+								img = new ImageIcon(this.getClass().getResource(imgPath + "mid_low.png"));
+
+							else if(absDifference < 11) {
+								if(absDifference == 10)
+									flag = 1;
+								img = new ImageIcon(this.getClass().getResource(imgPath + "mid_high.png"));
+							}
+							else
+								img = new ImageIcon(this.getClass().getResource(imgPath + "high.png"));
+
+							JLabel imgJLabel = new JLabel(img);
+							JPanel imgJPanel = new JPanel();
+							imgJPanel.setLayout(new FlowLayout());
+							imgJPanel.add(imgJLabel);
+
+							if(gifArray[k][i] == 1 || flag == 1 && gifArray[k][i] != -1) {
+								scores[k][i].add(imgJPanel);
+								gifArray[k][i] = -1;
+							}
+							if(gifArray[k][i] != -1)
+								gifArray[k][i] += 1;
+						}
+						
+					}
+				}
+				
 			}
 
 		}
@@ -203,6 +300,9 @@ public class LaneView implements LaneObserver, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(maintenance)) {
 			lane.pauseGame();
+		}
+		if(e.getSource().equals(ballThrow)) {
+		   lane.throwBall();
 		}
 	}
 
